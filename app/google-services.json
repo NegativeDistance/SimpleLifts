@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1016142943274",
+    "project_id": "simple-lifts-ab34c",
+    "storage_bucket": "simple-lifts-ab34c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016142943274:android:87aa3762c7fa16724b1f53",
+        "android_client_info": {
+          "package_name": "com.petrus.simplelifts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1016142943274-bm7kam1to9rfpu4gar08g5kvtca2s3ch.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4x0ZSQcWxLfg341aXRum88X63XOcSIQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1016142943274-bm7kam1to9rfpu4gar08g5kvtca2s3ch.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

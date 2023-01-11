@@ -47,7 +47,7 @@
                 android:autofillHints="weight"
                 android:ems="10"
                 android:hint="@string/weight"
-                android:inputType="number"
+                android:inputType="number|numberDecimal"
                 android:textSize="16sp" />
 
             <TextView

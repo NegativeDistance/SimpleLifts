@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 public class Bench extends AppCompatActivity
 {
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore database;
 
     ArrayList<SessionModel> sessionModelsPrevious;
@@ -39,7 +41,7 @@ public class Bench extends AppCompatActivity
     SeekBar seekBarDB;
     SeekBar seekBarIncline;
 
-    String email;
+    String uid;
     String lift;
 
     int position = 0;
@@ -54,7 +56,7 @@ public class Bench extends AppCompatActivity
         database = FirebaseFirestore.getInstance();
 
         //Find where to put this/set it for the user
-        email = "MikePetrus87@gmail.com";
+        uid = auth.getUid();
         lift = "benchFlatBB";
 
         sessionModelsPrevious = new ArrayList<>();
@@ -206,7 +208,7 @@ public class Bench extends AppCompatActivity
                 difficulty = "hard";
             }
 
-            sessionModelsCurrent.add(new SessionModel(weight.getText().toString(), reps.getText().toString(), difficulty));
+            sessionModelsCurrent.add(new SessionModel(Double.parseDouble(weight.getText().toString()), Integer.parseInt(reps.getText().toString()), difficulty));
             adapterCurrent.notifyItemInserted(position);
 
             delete.setClickable(true);
@@ -251,8 +253,8 @@ public class Bench extends AppCompatActivity
 
                 for (int i = 0; i < sessionModelsCurrent.size(); i++)
                 {
-                    String weightAdd = sessionModelsCurrent.get(i).getWeight();
-                    String repsAdd = sessionModelsCurrent.get(i).getReps();
+                    Double weightAdd = sessionModelsCurrent.get(i).getWeight();
+                    Integer repsAdd = sessionModelsCurrent.get(i).getReps();
                     String difficultyAdd = sessionModelsCurrent.get(i).getDifficulty();
                     int set = i + 1;
 
@@ -262,7 +264,7 @@ public class Bench extends AppCompatActivity
                     data.put("difficulty", difficultyAdd);
                     data.put("set", set);
 
-                    database.collection("Users").document(email).collection(lift)
+                    database.collection("users").document(uid).collection(lift)
                             .document("set" + (i + 1))
                             .set(data);
 
@@ -282,7 +284,7 @@ public class Bench extends AppCompatActivity
     private void fetchData(ArrayList<SessionModel> previous, Session_RecyclerViewAdapter adapter)
     {
         previous.clear();
-        database.collection("Users").document(email).collection(lift).orderBy("set")
+        database.collection("users").document(uid).collection(lift).orderBy("set")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
                 {

@@ -2,25 +2,25 @@ package com.petrus.simplelifts;
 
 public class SessionModel
 {
-    String weight;
-    String reps;
+    Double weight;
+    Integer reps;
     String difficulty;
 
     public SessionModel(){}
 
-    public SessionModel(String weight, String reps, String difficulty)
+    public SessionModel(Double weight, Integer reps, String difficulty)
     {
         this.weight = weight;
         this.reps = reps;
         this.difficulty = difficulty;
     }
 
-    public String getWeight()
+    public Double getWeight()
     {
         return weight;
     }
 
-    public String getReps()
+    public Integer getReps()
     {
         return reps;
     }
@@ -50,12 +50,12 @@ public class SessionModel
         return image;
     }
 
-    public void setWeight(String weight)
+    public void setWeight(Double weight)
     {
         this.weight = weight;
     }
 
-    public void setReps(String reps)
+    public void setReps(Integer reps)
     {
         this.reps = reps;
     }

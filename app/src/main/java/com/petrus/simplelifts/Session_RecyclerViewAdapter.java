@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Session_RecyclerViewAdapter extends RecyclerView.Adapter <Session_RecyclerViewAdapter.MyViewHolder>
@@ -42,17 +43,17 @@ public class Session_RecyclerViewAdapter extends RecyclerView.Adapter <Session_R
     {
         // assigning values to the views we created in the recycler_view_row layout file
         // based on the position of the recycler view
+        DecimalFormat format = new DecimalFormat("0.#");
 
-
-        holder.weight.setText(sessionModels.get(position).getWeight());
-        holder.reps.setText(sessionModels.get(position).getReps());
+        holder.weight.setText(String.valueOf(format.format(sessionModels.get(position).getWeight())));
+        holder.reps.setText(String.valueOf(sessionModels.get(position).getReps()));
         holder.difficulty.setImageResource(sessionModels.get(position).imageValue());
     }
 
     @Override
     public int getItemCount()
     {
-        // the recyler view just wants to know the number of items you want displayed
+        // the recycler view just wants to know the number of items you want displayed
         return sessionModels.size();
     }
 

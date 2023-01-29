@@ -37,6 +37,14 @@ public class MainActivity extends AppCompatActivity
         buttonBench.setOnClickListener(view ->
         {
             Intent intent = new Intent(MainActivity.this, Bench.class);
+            intent.putExtra("mode", "bench");
+            startActivity(intent);
+        });
+
+        buttonDeadlift.setOnClickListener(view ->
+        {
+            Intent intent = new Intent(MainActivity.this, Bench.class);
+            intent.putExtra("mode", "deadlift");
             startActivity(intent);
         });
 

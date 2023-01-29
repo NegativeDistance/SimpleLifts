@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,8 @@ public class Bench extends AppCompatActivity
     Session_RecyclerViewAdapter adapterPrevious;
     Session_RecyclerViewAdapter adapterCurrent;
 
+    TextView textViewTitle;
+
     RadioButton easy, normal, hard;
     Button add, delete, finish;
     EditText weight, reps;
@@ -46,6 +49,7 @@ public class Bench extends AppCompatActivity
 
     int position = 0;
     String difficulty;
+    String mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,7 +61,7 @@ public class Bench extends AppCompatActivity
 
         //Find where to put this/set it for the user
         uid = auth.getUid();
-        lift = "benchFlatBB";
+        mode = getIntent().getStringExtra("mode");
 
         sessionModelsPrevious = new ArrayList<>();
         sessionModelsCurrent = new ArrayList<>();
@@ -72,6 +76,8 @@ public class Bench extends AppCompatActivity
         recyclerViewCurrent.setAdapter(adapterCurrent);
         recyclerViewCurrent.setLayoutManager(new LinearLayoutManager(this));
 
+        textViewTitle = findViewById(R.id.textViewTitle);
+
         easy = findViewById(R.id.radioButtonEasy);
         normal = findViewById(R.id.radioButtonNormal);
         hard = findViewById(R.id.radioButtonHard);
@@ -82,6 +88,8 @@ public class Bench extends AppCompatActivity
 
         weight = findViewById(R.id.editTextWeight);
         reps = findViewById(R.id.editTextReps);
+
+        setup(mode);
 
         seekBarDB = findViewById(R.id.seekBarDB);
         seekBarIncline = findViewById(R.id.seekBarIncline);
@@ -279,6 +287,21 @@ public class Bench extends AppCompatActivity
                 position = 0;
             }
         });
+    }
+
+    private void setup(String mode)
+    {
+        switch(mode)
+        {
+            case "bench":
+                lift = "benchFlatBB";
+                textViewTitle.setText(R.string.bench);
+                break;
+            case "deadlift":
+                lift = "benchFlatBB";
+                textViewTitle.setText(R.string.deadlift);
+                break;
+        }
     }
 
     private void fetchData(ArrayList<SessionModel> previous, Session_RecyclerViewAdapter adapter)

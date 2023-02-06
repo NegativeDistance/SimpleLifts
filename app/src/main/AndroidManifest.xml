@@ -15,7 +15,7 @@
         <activity android:name=".Settings"></activity>
         <activity android:name=".ResetPassword" />
         <activity android:name=".SignUp" />
-        <activity android:name=".Bench" />
+        <activity android:name=".ActiveLift" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".Login"

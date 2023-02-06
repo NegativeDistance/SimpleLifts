@@ -7,9 +7,12 @@
     <string name="row">Row</string>
     <string name="db">Dumbbell</string>
     <string name="bb">Barbell</string>
+    <string name="trapbar">Trap Bar</string>
     <string name="flat">Flat</string>
     <string name="incline">Incline</string>
     <string name="decline">Decline</string>
+    <string name="conventional">Conventional</string>
+    <string name="sumo">Sumo</string>
     <string name="weight">Weight</string>
     <string name="x">X</string>
     <string name="reps">Reps</string>

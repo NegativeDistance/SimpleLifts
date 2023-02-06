@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Bench">
+    tools:context=".ActiveLift">
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -209,7 +209,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textViewDecline"
+            android:id="@+id/textViewBottomSeek1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/decline"
@@ -219,18 +219,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewFlat"
+            android:id="@+id/textViewBottomSeek2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/flat"
             android:textColor="@color/black"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/textViewIncline"
-            app:layout_constraintStart_toEndOf="@+id/textViewDecline"
+            app:layout_constraintEnd_toStartOf="@+id/textViewBottomSeek3"
+            app:layout_constraintStart_toEndOf="@+id/textViewBottomSeek1"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewIncline"
+            android:id="@+id/textViewBottomSeek3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/incline"
@@ -240,12 +240,26 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <SeekBar
-            android:id="@+id/seekBarIncline"
+            android:id="@+id/seekBarSelectThree"
             style="@android:style/Widget.DeviceDefault.SeekBar"
             android:layout_width="151dp"
             android:layout_height="22dp"
             android:max="2"
             android:progress="1"
+            android:progressBackgroundTint="@color/sl_purple"
+            android:progressBackgroundTintMode="src_over"
+            android:progressTint="@color/sl_purple"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <SeekBar
+            android:id="@+id/seekBarSelectTwo"
+            style="@android:style/Widget.DeviceDefault.SeekBar"
+            android:layout_width="151dp"
+            android:layout_height="22dp"
+            android:max="1"
+            android:progress="0"
             android:progressBackgroundTint="@color/sl_purple"
             android:progressBackgroundTintMode="src_over"
             android:progressTint="@color/sl_purple"
@@ -263,7 +277,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textViewBB"
+            android:id="@+id/textViewTopSeek1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -274,7 +288,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewDB"
+            android:id="@+id/textViewTopSeek2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

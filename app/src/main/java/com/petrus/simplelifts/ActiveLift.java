@@ -2,6 +2,7 @@ package com.petrus.simplelifts;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Bench extends AppCompatActivity
+public class ActiveLift extends AppCompatActivity
 {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore database;
@@ -36,13 +37,16 @@ public class Bench extends AppCompatActivity
     Session_RecyclerViewAdapter adapterCurrent;
 
     TextView textViewTitle;
+    TextView textViewTopSeek2;
+    TextView textViewBottomSeek1, textViewBottomSeek2, textViewBottomSeek3;
 
     RadioButton easy, normal, hard;
     Button add, delete, finish;
     EditText weight, reps;
 
     SeekBar seekBarDB;
-    SeekBar seekBarIncline;
+    SeekBar seekBarSelectTwo;
+    SeekBar seekBarSelectThree;
 
     String uid;
     String lift;
@@ -55,7 +59,7 @@ public class Bench extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bench);
+        setContentView(R.layout.activity_active_lift);
 
         database = FirebaseFirestore.getInstance();
 
@@ -77,6 +81,14 @@ public class Bench extends AppCompatActivity
         recyclerViewCurrent.setLayoutManager(new LinearLayoutManager(this));
 
         textViewTitle = findViewById(R.id.textViewTitle);
+        textViewTopSeek2 = findViewById(R.id.textViewTopSeek2);
+        textViewBottomSeek1 = findViewById(R.id.textViewBottomSeek1);
+        textViewBottomSeek2 = findViewById(R.id.textViewBottomSeek2);
+        textViewBottomSeek3 = findViewById(R.id.textViewBottomSeek3);
+
+        seekBarDB = findViewById(R.id.seekBarDB);
+        seekBarSelectThree = findViewById(R.id.seekBarSelectThree);
+        seekBarSelectTwo = findViewById(R.id.seekBarSelectTwo);
 
         easy = findViewById(R.id.radioButtonEasy);
         normal = findViewById(R.id.radioButtonNormal);
@@ -91,9 +103,6 @@ public class Bench extends AppCompatActivity
 
         setup(mode);
 
-        seekBarDB = findViewById(R.id.seekBarDB);
-        seekBarIncline = findViewById(R.id.seekBarIncline);
-
         fetchData(sessionModelsPrevious, adapterPrevious);
 
         seekBarDB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
@@ -103,30 +112,30 @@ public class Bench extends AppCompatActivity
             {
                 if (progress == 0)
                 {
-                    if (seekBarIncline.getProgress() == 0)
+                    if (seekBarSelectThree.getProgress() == 0)
                     {
                         lift = "benchDeclineBB";
                     }
-                    else if (seekBarIncline.getProgress() == 1)
+                    else if (seekBarSelectThree.getProgress() == 1)
                     {
                         lift = "benchFlatBB";
                     }
-                    else if (seekBarIncline.getProgress() == 2)
+                    else if (seekBarSelectThree.getProgress() == 2)
                     {
                         lift = "benchInclineBB";
                     }
                 }
                 else if (progress == 1)
                 {
-                    if (seekBarIncline.getProgress() == 0)
+                    if (seekBarSelectThree.getProgress() == 0)
                     {
                         lift = "benchDeclineDB";
                     }
-                    else if (seekBarIncline.getProgress() == 1)
+                    else if (seekBarSelectThree.getProgress() == 1)
                     {
                         lift = "benchFlatDB";
                     }
-                    else if (seekBarIncline.getProgress() == 2)
+                    else if (seekBarSelectThree.getProgress() == 2)
                     {
                         lift = "benchInclineDB";
                     }
@@ -148,7 +157,7 @@ public class Bench extends AppCompatActivity
             }
         });
 
-        seekBarIncline.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        seekBarSelectThree.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b)
@@ -296,10 +305,25 @@ public class Bench extends AppCompatActivity
             case "bench":
                 lift = "benchFlatBB";
                 textViewTitle.setText(R.string.bench);
+                textViewTopSeek2.setText(R.string.db);
+
+                seekBarSelectThree.setVisibility(View.VISIBLE);
+                seekBarSelectTwo.setVisibility(View.INVISIBLE);
+                textViewBottomSeek1.setText(R.string.decline);
+                textViewBottomSeek2.setVisibility(View.VISIBLE);
+                textViewBottomSeek2.setText(R.string.flat);
+                textViewBottomSeek3.setText(R.string.incline);
                 break;
             case "deadlift":
-                lift = "benchFlatBB";
+                lift = "deadliftConvBB";
                 textViewTitle.setText(R.string.deadlift);
+                textViewTopSeek2.setText(R.string.trapbar);
+
+                seekBarSelectThree.setVisibility(View.INVISIBLE);
+                seekBarSelectTwo.setVisibility(View.VISIBLE);
+                textViewBottomSeek1.setText(R.string.conventional);
+                textViewBottomSeek2.setVisibility(View.INVISIBLE);
+                textViewBottomSeek3.setText(R.string.sumo);
                 break;
         }
     }

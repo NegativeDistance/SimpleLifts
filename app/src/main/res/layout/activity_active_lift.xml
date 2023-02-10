@@ -42,8 +42,8 @@
 
             <EditText
                 android:id="@+id/editTextWeight"
-                android:layout_width="175dp"
-                android:layout_height="wrap_content"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
                 android:autofillHints="weight"
                 android:ems="10"
                 android:hint="@string/weight"
@@ -63,7 +63,7 @@
             <EditText
                 android:id="@+id/editTextReps"
                 android:layout_width="75dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginEnd="10dp"
                 android:autofillHints="reps"
                 android:ems="10"
@@ -79,24 +79,24 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonEasy"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginEnd="5dp"
                     android:checked="false"
                     android:theme="@style/RadioButtonBlue" />
 
                 <RadioButton
                     android:id="@+id/radioButtonNormal"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginEnd="5dp"
                     android:checked="true"
                     android:theme="@style/RadioButtonGreen" />
 
                 <RadioButton
                     android:id="@+id/radioButtonHard"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:theme="@style/RadioButtonRed" />
             </RadioGroup>
 
@@ -149,35 +149,34 @@
         android:id="@+id/textViewPreviousTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/recent"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewPrevious"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintEnd_toEndOf="@+id/recyclerViewPrevious"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewPrevious" />
 
     <TextView
         android:id="@+id/textViewCurrentTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/current"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewCurrent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.822" />
+        app:layout_constraintEnd_toEndOf="@+id/recyclerViewCurrent"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewCurrent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPrevious"
-        android:layout_width="190dp"
+        android:layout_width="180dp"
         android:layout_height="200dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="100dp"
         android:background="@color/gray"
         android:paddingVertical="5dp"
@@ -188,10 +187,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCurrent"
-        android:layout_width="190dp"
+        android:layout_width="180dp"
         android:layout_height="200dp"
         android:layout_marginTop="100dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="15dp"
         android:background="@color/gray"
         android:paddingVertical="5dp"
         android:paddingStart="5dp"
@@ -299,7 +298,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <SeekBar
-            android:id="@+id/seekBarDB"
+            android:id="@+id/seekBarBarType"
             style="@android:style/Widget.DeviceDefault.SeekBar"
             android:layout_width="151dp"
             android:layout_height="22dp"
@@ -312,5 +311,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/imageViewLeftButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPreviousTitle"
+        app:layout_constraintEnd_toStartOf="@+id/textViewPreviousTitle"
+        app:layout_constraintTop_toTopOf="@+id/textViewPreviousTitle"
+        app:srcCompat="@drawable/arrow_left" />
+
+    <ImageView
+        android:id="@+id/imageViewRightButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPreviousTitle"
+        app:layout_constraintStart_toEndOf="@+id/textViewPreviousTitle"
+        app:layout_constraintTop_toTopOf="@+id/textViewPreviousTitle"
+        app:srcCompat="@drawable/arrow_right" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

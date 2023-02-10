@@ -31,10 +31,8 @@ public class ActiveLift extends AppCompatActivity
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore database;
 
-    ArrayList<SessionModel> sessionModelsPrevious;
-    ArrayList<SessionModel> sessionModelsCurrent;
-    Session_RecyclerViewAdapter adapterPrevious;
-    Session_RecyclerViewAdapter adapterCurrent;
+    ArrayList<SessionModel> sessionModelsPrevious, sessionModelsCurrent;
+    Session_RecyclerViewAdapter adapterPrevious, adapterCurrent;
 
     TextView textViewTitle;
     TextView textViewTopSeek2;
@@ -44,12 +42,12 @@ public class ActiveLift extends AppCompatActivity
     Button add, delete, finish;
     EditText weight, reps;
 
-    SeekBar seekBarDB;
-    SeekBar seekBarSelectTwo;
-    SeekBar seekBarSelectThree;
+    SeekBar seekBarBarType, seekBarSelectTwo, seekBarSelectThree;
 
     String uid;
     String lift;
+    String benchFlatBB, benchFlatDB, benchInclineBB, benchInclineDB, benchDeclineBB, benchDeclineDB, squatHighBB, squatLowBB, squatFrontBB,
+            deadliftConvBB, deadliftConvHex, deadliftSumoBB;
 
     int position = 0;
     String difficulty;
@@ -86,7 +84,7 @@ public class ActiveLift extends AppCompatActivity
         textViewBottomSeek2 = findViewById(R.id.textViewBottomSeek2);
         textViewBottomSeek3 = findViewById(R.id.textViewBottomSeek3);
 
-        seekBarDB = findViewById(R.id.seekBarDB);
+        seekBarBarType = findViewById(R.id.seekBarBarType);
         seekBarSelectThree = findViewById(R.id.seekBarSelectThree);
         seekBarSelectTwo = findViewById(R.id.seekBarSelectTwo);
 
@@ -101,45 +99,81 @@ public class ActiveLift extends AppCompatActivity
         weight = findViewById(R.id.editTextWeight);
         reps = findViewById(R.id.editTextReps);
 
+        benchFlatBB = getString(R.string.benchFlatBB);
+        benchFlatDB = getString(R.string.benchFlatDB);
+        benchInclineBB = getString(R.string.benchInclineBB);
+        benchInclineDB = getString(R.string.benchInclineDB);
+        benchDeclineBB = getString(R.string.benchInclineBB);
+        benchDeclineDB = getString(R.string.benchInclineDB);
+        squatHighBB = getString(R.string.squatHighBB);
+        squatLowBB = getString(R.string.squatLowBB);
+        squatFrontBB = getString(R.string.squatFrontBB);
+        deadliftConvBB = getString(R.string.deadliftConvBB);
+        deadliftConvHex = getString(R.string.deadliftConvHex);
+        deadliftSumoBB = getString(R.string.deadliftSumoBB);
+
         setup(mode);
 
-        fetchData(sessionModelsPrevious, adapterPrevious);
-
-        seekBarDB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        seekBarBarType.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b)
             {
-                if (progress == 0)
+                switch (mode)
                 {
-                    if (seekBarSelectThree.getProgress() == 0)
-                    {
-                        lift = "benchDeclineBB";
-                    }
-                    else if (seekBarSelectThree.getProgress() == 1)
-                    {
-                        lift = "benchFlatBB";
-                    }
-                    else if (seekBarSelectThree.getProgress() == 2)
-                    {
-                        lift = "benchInclineBB";
-                    }
+                    case "bench":
+                        if (progress == 0)
+                        {
+                            if (seekBarSelectThree.getProgress() == 0)
+                            {
+                                lift = benchDeclineBB;
+                            }
+                            else if (seekBarSelectThree.getProgress() == 1)
+                            {
+                                lift = benchFlatBB;
+                            }
+                            else if (seekBarSelectThree.getProgress() == 2)
+                            {
+                                lift = benchInclineBB;
+                            }
+                        }
+                        else if (progress == 1)
+                        {
+                            if (seekBarSelectThree.getProgress() == 0)
+                            {
+                                lift = benchDeclineDB;
+                            }
+                            else if (seekBarSelectThree.getProgress() == 1)
+                            {
+                                lift = benchFlatDB;
+                            }
+                            else if (seekBarSelectThree.getProgress() == 2)
+                            {
+                                lift = benchInclineDB;
+                            }
+                        }
+                        break;
+
+                    case "deadlift":
+                        if (progress == 0)
+                        {
+                            if  (seekBarSelectTwo.getProgress() == 0)
+                            {
+                                lift = deadliftConvBB;
+                            }
+                            else if (seekBarSelectTwo.getProgress() == 1)
+                            {
+                                lift = deadliftSumoBB;
+                            }
+                        }
+                        else if (progress == 1)
+                        {
+                            seekBarSelectTwo.setProgress(0);
+                            lift = deadliftConvHex;
+                        }
+                        break;
                 }
-                else if (progress == 1)
-                {
-                    if (seekBarSelectThree.getProgress() == 0)
-                    {
-                        lift = "benchDeclineDB";
-                    }
-                    else if (seekBarSelectThree.getProgress() == 1)
-                    {
-                        lift = "benchFlatDB";
-                    }
-                    else if (seekBarSelectThree.getProgress() == 2)
-                    {
-                        lift = "benchInclineDB";
-                    }
-                }
+
                 fetchData(sessionModelsPrevious, adapterPrevious);
                 Log.d("switch", "current lift: " + lift);
             }
@@ -164,35 +198,35 @@ public class ActiveLift extends AppCompatActivity
             {
                 if (progress == 0)
                 {
-                    if (seekBarDB.getProgress() == 0)
+                    if (seekBarBarType.getProgress() == 0)
                     {
-                        lift = "benchDeclineBB";
+                        lift = benchDeclineBB;
                     }
-                    else if (seekBarDB.getProgress() == 1)
+                    else if (seekBarBarType.getProgress() == 1)
                     {
-                        lift = "benchDeclineDB";
+                        lift = benchDeclineDB;
                     }
                 }
                 else if (progress == 1)
                 {
-                    if (seekBarDB.getProgress() == 0)
+                    if (seekBarBarType.getProgress() == 0)
                     {
-                        lift = "benchFlatBB";
+                        lift = benchFlatBB;
                     }
-                    else if (seekBarDB.getProgress() == 1)
+                    else if (seekBarBarType.getProgress() == 1)
                     {
-                        lift = "benchFlatDB";
+                        lift = benchFlatDB;
                     }
                 }
                 else if (progress == 2)
                 {
-                    if (seekBarDB.getProgress() == 0)
+                    if (seekBarBarType.getProgress() == 0)
                     {
-                        lift = "benchInclineBB";
+                        lift = benchInclineBB;
                     }
-                    else if (seekBarDB.getProgress() == 1)
+                    else if (seekBarBarType.getProgress() == 1)
                     {
-                        lift = "benchInclineDB";
+                        lift = benchInclineDB;
                     }
                 }
                 fetchData(sessionModelsPrevious, adapterPrevious);
@@ -207,6 +241,52 @@ public class ActiveLift extends AppCompatActivity
             @Override
             public void onStopTrackingTouch(SeekBar seekBar)
             {
+            }
+        });
+
+        seekBarSelectTwo.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b)
+            {
+                switch (mode)
+                {
+                    case "ohpress":
+                        break;
+
+                    case "deadlift":
+                        if (progress == 0)
+                        {
+                            if (seekBarBarType.getProgress() == 0)
+                            {
+                                lift = deadliftConvBB;
+                            }
+                            else if (seekBarBarType.getProgress() == 1)
+                            {
+                                lift = deadliftSumoBB;
+                            }
+                        }
+                        else if (progress == 1)
+                        {
+                            seekBarBarType.setProgress(0);
+                            lift = deadliftConvHex;
+                        }
+                        break;
+                }
+                fetchData(sessionModelsPrevious, adapterPrevious);
+                Log.d("switch", "current lift: " + lift);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+
             }
         });
 
@@ -303,7 +383,7 @@ public class ActiveLift extends AppCompatActivity
         switch(mode)
         {
             case "bench":
-                lift = "benchFlatBB";
+                lift = benchFlatBB;
                 textViewTitle.setText(R.string.bench);
                 textViewTopSeek2.setText(R.string.db);
 
@@ -314,10 +394,23 @@ public class ActiveLift extends AppCompatActivity
                 textViewBottomSeek2.setText(R.string.flat);
                 textViewBottomSeek3.setText(R.string.incline);
                 break;
+
+            case "squat":
+                lift = squatHighBB;
+                textViewTitle.setText(R.string.squat);
+
+                seekBarSelectThree.setVisibility(View.VISIBLE);
+                seekBarSelectTwo.setVisibility(View.INVISIBLE);
+                textViewBottomSeek1.setText(R.string.lowbar);
+                textViewBottomSeek2.setVisibility(View.VISIBLE);
+                textViewBottomSeek2.setText(R.string.highbar);
+                textViewBottomSeek3.setText(R.string.frontsquat);
+                break;
+
             case "deadlift":
-                lift = "deadliftConvBB";
+                lift = benchFlatBB;
                 textViewTitle.setText(R.string.deadlift);
-                textViewTopSeek2.setText(R.string.trapbar);
+                textViewTopSeek2.setText(R.string.hexbar);
 
                 seekBarSelectThree.setVisibility(View.INVISIBLE);
                 seekBarSelectTwo.setVisibility(View.VISIBLE);
@@ -326,6 +419,7 @@ public class ActiveLift extends AppCompatActivity
                 textViewBottomSeek3.setText(R.string.sumo);
                 break;
         }
+        fetchData(sessionModelsPrevious, adapterPrevious);
     }
 
     private void fetchData(ArrayList<SessionModel> previous, Session_RecyclerViewAdapter adapter)

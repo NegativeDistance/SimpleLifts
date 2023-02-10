@@ -41,6 +41,13 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         });
 
+        buttonSquat.setOnClickListener(view ->
+        {
+            Intent intent = new Intent(MainActivity.this, ActiveLift.class);
+            intent.putExtra("mode", "squat");
+            startActivity(intent);
+        });
+
         buttonDeadlift.setOnClickListener(view ->
         {
             Intent intent = new Intent(MainActivity.this, ActiveLift.class);

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="benchFlatBB">benchFlatBB</string>
+    <string name="benchFlatDB">benchFlatDB</string>
+    <string name="benchInclineBB">benchInclineBB</string>
+    <string name="benchInclineDB">benchInclineDB</string>
+    <string name="benchDeclineBB">benchDeclineBB</string>
+    <string name="benchDeclineDB">benchDeclineDB</string>
+
+    <string name="squatHighBB">squatHighBB</string>
+    <string name="squatLowBB">squatLowBB</string>
+    <string name="squatFrontBB">squatFrontBB</string>
+
+    <string name="deadliftConvBB">deadliftConvBB</string>
+    <string name="deadliftConvHex">deadliftConvBB</string>
+    <string name="deadliftSumoBB">deadliftConvBB</string>
+</resources>

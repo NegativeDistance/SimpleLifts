@@ -35,7 +35,7 @@ public class ActiveLift extends AppCompatActivity
     Session_RecyclerViewAdapter adapterPrevious, adapterCurrent;
 
     TextView textViewTitle;
-    TextView textViewTopSeek2;
+    TextView textViewTopSeek1, textViewTopSeek2;
     TextView textViewBottomSeek1, textViewBottomSeek2, textViewBottomSeek3;
 
     RadioButton easy, normal, hard;
@@ -79,6 +79,7 @@ public class ActiveLift extends AppCompatActivity
         recyclerViewCurrent.setLayoutManager(new LinearLayoutManager(this));
 
         textViewTitle = findViewById(R.id.textViewTitle);
+        textViewTopSeek1 = findViewById(R.id.textViewTopSeek1);
         textViewTopSeek2 = findViewById(R.id.textViewTopSeek2);
         textViewBottomSeek1 = findViewById(R.id.textViewBottomSeek1);
         textViewBottomSeek2 = findViewById(R.id.textViewBottomSeek2);
@@ -103,8 +104,8 @@ public class ActiveLift extends AppCompatActivity
         benchFlatDB = getString(R.string.benchFlatDB);
         benchInclineBB = getString(R.string.benchInclineBB);
         benchInclineDB = getString(R.string.benchInclineDB);
-        benchDeclineBB = getString(R.string.benchInclineBB);
-        benchDeclineDB = getString(R.string.benchInclineDB);
+        benchDeclineBB = getString(R.string.benchDeclineBB);
+        benchDeclineDB = getString(R.string.benchDeclineDB);
         squatHighBB = getString(R.string.squatHighBB);
         squatLowBB = getString(R.string.squatLowBB);
         squatFrontBB = getString(R.string.squatFrontBB);
@@ -122,49 +123,40 @@ public class ActiveLift extends AppCompatActivity
                 switch (mode)
                 {
                     case "bench":
-                        if (progress == 0)
+                        if (progress == 0 && seekBarSelectThree.getProgress() == 0)
                         {
-                            if (seekBarSelectThree.getProgress() == 0)
-                            {
-                                lift = benchDeclineBB;
-                            }
-                            else if (seekBarSelectThree.getProgress() == 1)
-                            {
-                                lift = benchFlatBB;
-                            }
-                            else if (seekBarSelectThree.getProgress() == 2)
-                            {
-                                lift = benchInclineBB;
-                            }
+                            lift = benchDeclineBB;
                         }
-                        else if (progress == 1)
+                        else if (progress == 0 && seekBarSelectThree.getProgress() == 1)
                         {
-                            if (seekBarSelectThree.getProgress() == 0)
-                            {
-                                lift = benchDeclineDB;
-                            }
-                            else if (seekBarSelectThree.getProgress() == 1)
-                            {
-                                lift = benchFlatDB;
-                            }
-                            else if (seekBarSelectThree.getProgress() == 2)
-                            {
-                                lift = benchInclineDB;
-                            }
+                            lift = benchFlatBB;
+                        }
+                        else if (progress == 0 && seekBarSelectThree.getProgress() == 2)
+                        {
+                            lift = benchInclineBB;
+                        }
+                        if (progress == 1 && seekBarSelectThree.getProgress() == 0)
+                        {
+                            lift = benchDeclineDB;
+                        }
+                        else if (progress == 1 && seekBarSelectThree.getProgress() == 1)
+                        {
+                            lift = benchFlatDB;
+                        }
+                        else if (progress == 1 && seekBarSelectThree.getProgress() == 2)
+                        {
+                            lift = benchInclineDB;
                         }
                         break;
 
                     case "deadlift":
-                        if (progress == 0)
+                        if (progress == 0 && seekBarSelectTwo.getProgress() == 0)
                         {
-                            if  (seekBarSelectTwo.getProgress() == 0)
-                            {
-                                lift = deadliftConvBB;
-                            }
-                            else if (seekBarSelectTwo.getProgress() == 1)
-                            {
-                                lift = deadliftSumoBB;
-                            }
+                            lift = deadliftConvBB;
+                        }
+                        if (progress == 0 && seekBarSelectTwo.getProgress() == 1)
+                        {
+                            lift = deadliftSumoBB;
                         }
                         else if (progress == 1)
                         {
@@ -196,39 +188,52 @@ public class ActiveLift extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b)
             {
-                if (progress == 0)
+                switch (mode)
                 {
-                    if (seekBarBarType.getProgress() == 0)
-                    {
-                        lift = benchDeclineBB;
-                    }
-                    else if (seekBarBarType.getProgress() == 1)
-                    {
-                        lift = benchDeclineDB;
-                    }
+                    case "bench":
+                        if (progress == 0 && seekBarBarType.getProgress() == 0)
+                        {
+                            lift = benchDeclineBB;
+                        }
+                        else if (progress == 0 && seekBarBarType.getProgress() == 1)
+                        {
+                            lift = benchDeclineDB;
+                        }
+                        else if (progress == 1 && seekBarBarType.getProgress() == 0)
+                        {
+                            lift = benchFlatBB;
+                        }
+                        else if (progress == 1 && seekBarBarType.getProgress() == 1)
+                        {
+                            lift = benchFlatDB;
+                        }
+                        else if (progress == 2 && seekBarBarType.getProgress() == 0)
+                        {
+                            lift = benchInclineBB;
+                        }
+                        else if (progress == 2 && seekBarBarType.getProgress() == 1)
+                        {
+                            lift = benchInclineDB;
+                        }
+                        break;
+
+                    case "squat":
+                        if (progress == 0)
+                        {
+                            lift = squatLowBB;
+                        }
+                        else if (progress == 1)
+                        {
+                            lift = squatHighBB;
+                        }
+                        else if (progress == 2)
+                        {
+                            lift = squatFrontBB;
+                        }
+                        break;
                 }
-                else if (progress == 1)
-                {
-                    if (seekBarBarType.getProgress() == 0)
-                    {
-                        lift = benchFlatBB;
-                    }
-                    else if (seekBarBarType.getProgress() == 1)
-                    {
-                        lift = benchFlatDB;
-                    }
-                }
-                else if (progress == 2)
-                {
-                    if (seekBarBarType.getProgress() == 0)
-                    {
-                        lift = benchInclineBB;
-                    }
-                    else if (seekBarBarType.getProgress() == 1)
-                    {
-                        lift = benchInclineDB;
-                    }
-                }
+
+
                 fetchData(sessionModelsPrevious, adapterPrevious);
                 Log.d("switch", "current lift: " + lift);
             }
@@ -255,21 +260,18 @@ public class ActiveLift extends AppCompatActivity
                         break;
 
                     case "deadlift":
-                        if (progress == 0)
+                        if (progress == 0 && seekBarBarType.getProgress() == 0)
                         {
-                            if (seekBarBarType.getProgress() == 0)
-                            {
-                                lift = deadliftConvBB;
-                            }
-                            else if (seekBarBarType.getProgress() == 1)
-                            {
-                                lift = deadliftSumoBB;
-                            }
+                            lift = deadliftConvBB;
+                        }
+                        else if (progress == 0 && seekBarBarType.getProgress() == 1)
+                        {
+                            lift = deadliftConvHex;
                         }
                         else if (progress == 1)
                         {
                             seekBarBarType.setProgress(0);
-                            lift = deadliftConvHex;
+                            lift = deadliftSumoBB;
                         }
                         break;
                 }
@@ -384,11 +386,15 @@ public class ActiveLift extends AppCompatActivity
         {
             case "bench":
                 lift = benchFlatBB;
-                textViewTitle.setText(R.string.bench);
-                textViewTopSeek2.setText(R.string.db);
-
+                seekBarBarType.setVisibility(View.VISIBLE);
                 seekBarSelectThree.setVisibility(View.VISIBLE);
                 seekBarSelectTwo.setVisibility(View.INVISIBLE);
+
+                textViewTitle.setText(R.string.bench);
+                textViewTopSeek1.setVisibility(View.VISIBLE);
+                textViewTopSeek2.setVisibility(View.VISIBLE);
+                textViewTopSeek2.setText(R.string.db);
+
                 textViewBottomSeek1.setText(R.string.decline);
                 textViewBottomSeek2.setVisibility(View.VISIBLE);
                 textViewBottomSeek2.setText(R.string.flat);
@@ -397,10 +403,14 @@ public class ActiveLift extends AppCompatActivity
 
             case "squat":
                 lift = squatHighBB;
-                textViewTitle.setText(R.string.squat);
-
+                seekBarBarType.setVisibility(View.INVISIBLE);
                 seekBarSelectThree.setVisibility(View.VISIBLE);
                 seekBarSelectTwo.setVisibility(View.INVISIBLE);
+
+                textViewTitle.setText(R.string.squat);
+                textViewTopSeek1.setVisibility(View.INVISIBLE);
+                textViewTopSeek2.setVisibility(View.INVISIBLE);
+
                 textViewBottomSeek1.setText(R.string.lowbar);
                 textViewBottomSeek2.setVisibility(View.VISIBLE);
                 textViewBottomSeek2.setText(R.string.highbar);
@@ -409,11 +419,15 @@ public class ActiveLift extends AppCompatActivity
 
             case "deadlift":
                 lift = benchFlatBB;
-                textViewTitle.setText(R.string.deadlift);
-                textViewTopSeek2.setText(R.string.hexbar);
-
+                seekBarBarType.setVisibility(View.VISIBLE);
                 seekBarSelectThree.setVisibility(View.INVISIBLE);
                 seekBarSelectTwo.setVisibility(View.VISIBLE);
+
+                textViewTitle.setText(R.string.deadlift);
+                textViewTopSeek1.setVisibility(View.VISIBLE);
+                textViewTopSeek2.setVisibility(View.VISIBLE);
+                textViewTopSeek2.setText(R.string.hexbar);
+
                 textViewBottomSeek1.setText(R.string.conventional);
                 textViewBottomSeek2.setVisibility(View.INVISIBLE);
                 textViewBottomSeek3.setText(R.string.sumo);

@@ -12,6 +12,6 @@
     <string name="squatFrontBB">squatFrontBB</string>
 
     <string name="deadliftConvBB">deadliftConvBB</string>
-    <string name="deadliftConvHex">deadliftConvBB</string>
-    <string name="deadliftSumoBB">deadliftConvBB</string>
+    <string name="deadliftConvHex">deadliftConvHex</string>
+    <string name="deadliftSumoBB">deadliftSumoBB</string>
 </resources>

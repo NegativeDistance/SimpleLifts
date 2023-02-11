@@ -73,15 +73,15 @@
 
             <RadioGroup
                 android:id="@+id/diffRadioGroup"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/radioButtonEasy"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:layout_marginEnd="5dp"
                     android:checked="false"
                     android:theme="@style/RadioButtonBlue" />
 
@@ -89,7 +89,6 @@
                     android:id="@+id/radioButtonNormal"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:layout_marginEnd="5dp"
                     android:checked="true"
                     android:theme="@style/RadioButtonGreen" />
 

@@ -7,6 +7,11 @@
     <string name="benchDeclineBB">benchDeclineBB</string>
     <string name="benchDeclineDB">benchDeclineDB</string>
 
+    <string name="overheadStandingBB">overheadStandingBB</string>
+    <string name="overheadStandingDB">overheadStandingDB</string>
+    <string name="overheadSeatedBB">overheadSeatedBB</string>
+    <string name="overheadSeatedDB">overheadSeatedDB</string>
+
     <string name="squatHighBB">squatHighBB</string>
     <string name="squatLowBB">squatLowBB</string>
     <string name="squatFrontBB">squatFrontBB</string>
@@ -14,4 +19,11 @@
     <string name="deadliftConvBB">deadliftConvBB</string>
     <string name="deadliftConvHex">deadliftConvHex</string>
     <string name="deadliftSumoBB">deadliftSumoBB</string>
+
+    <string name="rowOverhandBB">rowOverhandBB</string>
+    <string name="rowOverhandDB">rowOverhandDB</string>
+    <string name="rowNeutralBB">rowNeutralBB</string>
+    <string name="rowNeutralDB">rowNeutralDB</string>
+    <string name="rowUnderhandBB">rowUnderhandBB</string>
+    <string name="rowUnderhandDB">rowUnderhandDB</string>
 </resources>

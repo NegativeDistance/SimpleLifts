@@ -41,6 +41,13 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         });
 
+        buttonOHP.setOnClickListener(view ->
+        {
+            Intent intent = new Intent(MainActivity.this, ActiveLift.class);
+            intent.putExtra("mode", "overhead");
+            startActivity(intent);
+        });
+
         buttonSquat.setOnClickListener(view ->
         {
             Intent intent = new Intent(MainActivity.this, ActiveLift.class);
@@ -52,6 +59,13 @@ public class MainActivity extends AppCompatActivity
         {
             Intent intent = new Intent(MainActivity.this, ActiveLift.class);
             intent.putExtra("mode", "deadlift");
+            startActivity(intent);
+        });
+
+        buttonRow.setOnClickListener(view ->
+        {
+            Intent intent = new Intent(MainActivity.this, ActiveLift.class);
+            intent.putExtra("mode", "row");
             startActivity(intent);
         });
 

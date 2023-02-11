@@ -11,11 +11,16 @@
     <string name="flat">Flat</string>
     <string name="incline">Incline</string>
     <string name="decline">Decline</string>
+    <string name="standing">Standing</string>
+    <string name="seated">Seated</string>
     <string name="lowbar">Low</string>
     <string name="highbar">High</string>
     <string name="frontsquat">Front</string>
     <string name="conventional">Conventional</string>
     <string name="sumo">Sumo</string>
+    <string name="overhand">Overhand</string>
+    <string name="neutral">Neutral</string>
+    <string name="underhand">Underhand</string>
     <string name="weight">Weight</string>
     <string name="x">X</string>
     <string name="reps">Reps</string>

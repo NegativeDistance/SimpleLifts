@@ -18,11 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class ActiveLift extends AppCompatActivity
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore database;
 
-    ArrayList<SessionModel> sessionModelsPrevious, sessionModelsCurrent;
+    Session sessionPrevious, sessionCurrent;
     Session_RecyclerViewAdapter adapterPrevious, adapterCurrent;
 
     TextView textViewTitle;
@@ -68,10 +69,10 @@ public class ActiveLift extends AppCompatActivity
         uid = auth.getUid();
         mode = getIntent().getStringExtra("mode");
 
-        sessionModelsPrevious = new ArrayList<>();
-        sessionModelsCurrent = new ArrayList<>();
-        adapterPrevious = new Session_RecyclerViewAdapter(sessionModelsPrevious, this);
-        adapterCurrent = new Session_RecyclerViewAdapter(sessionModelsCurrent, this);
+        sessionPrevious = new Session();
+        sessionCurrent = new Session();
+        adapterPrevious = new Session_RecyclerViewAdapter(sessionPrevious, this);
+        adapterCurrent = new Session_RecyclerViewAdapter(sessionCurrent, this);
 
         RecyclerView recyclerViewPrevious = findViewById(R.id.recyclerViewPrevious);
         RecyclerView recyclerViewCurrent = findViewById(R.id.recyclerViewCurrent);
@@ -225,7 +226,7 @@ public class ActiveLift extends AppCompatActivity
                         break;
                 }
 
-                fetchData(sessionModelsPrevious, adapterPrevious);
+                fetchData(sessionPrevious, adapterPrevious);
                 Log.d("switch", "current lift: " + lift);
             }
 
@@ -319,7 +320,7 @@ public class ActiveLift extends AppCompatActivity
                         break;
                 }
 
-                fetchData(sessionModelsPrevious, adapterPrevious);
+                fetchData(sessionPrevious, adapterPrevious);
                 Log.d("switch", "current lift: " + lift);
             }
 
@@ -376,7 +377,7 @@ public class ActiveLift extends AppCompatActivity
                         }
                         break;
                 }
-                fetchData(sessionModelsPrevious, adapterPrevious);
+                fetchData(sessionPrevious, adapterPrevious);
                 Log.d("switch", "current lift: " + lift);
             }
 
@@ -408,7 +409,7 @@ public class ActiveLift extends AppCompatActivity
                 difficulty = "hard";
             }
 
-            sessionModelsCurrent.add(new SessionModel(Double.parseDouble(weight.getText().toString()), Integer.parseInt(reps.getText().toString()), difficulty));
+            sessionCurrent.add(new SetModel(Double.parseDouble(weight.getText().toString()), Integer.parseInt(reps.getText().toString()), difficulty));
             adapterCurrent.notifyItemInserted(position);
 
             delete.setClickable(true);
@@ -425,9 +426,9 @@ public class ActiveLift extends AppCompatActivity
             }
             else
             {
-                sessionModelsCurrent.remove(position - 1);
+                sessionCurrent.remove(position - 1);
                 adapterCurrent.notifyItemRemoved(position - 1);
-                adapterCurrent.notifyItemRangeChanged(position - 1, sessionModelsCurrent.size());
+                adapterCurrent.notifyItemRangeChanged(position - 1, sessionCurrent.size());
 
                 position--;
 
@@ -441,38 +442,41 @@ public class ActiveLift extends AppCompatActivity
 
         finish.setOnClickListener(view ->
         {
-            if (sessionModelsCurrent.size() == 0)
+            if (sessionCurrent.size() == 0)
             {
                 Toast.makeText(getApplicationContext(), "No entries", Toast.LENGTH_LONG).show();
             }
             else
             {
-                sessionModelsPrevious.clear();
+                sessionPrevious.clear();
                 adapterPrevious.notifyItemRangeChanged(0, 0);
                 adapterPrevious.notifyDataSetChanged();
 
-                for (int i = 0; i < sessionModelsCurrent.size(); i++)
+                Map<String, Object> time = new HashMap<>();
+                time.put("timestamp", FieldValue.serverTimestamp());
+
+                DocumentReference sessionReference = database.collection("users").document(uid).collection(lift).document();
+                sessionReference.set(time);
+
+                for (int i = 0; i < sessionCurrent.size(); i++)
                 {
-                    Double weightAdd = sessionModelsCurrent.get(i).getWeight();
-                    Integer repsAdd = sessionModelsCurrent.get(i).getReps();
-                    String difficultyAdd = sessionModelsCurrent.get(i).getDifficulty();
-                    int set = i + 1;
+                    Double weightAdd = sessionCurrent.get(i).getWeight();
+                    Integer repsAdd = sessionCurrent.get(i).getReps();
+                    String difficultyAdd = sessionCurrent.get(i).getDifficulty();
 
                     Map<String, Object> data = new HashMap<>();
                     data.put("weight", weightAdd);
                     data.put("reps", repsAdd);
                     data.put("difficulty", difficultyAdd);
-                    data.put("set", set);
 
-                    database.collection("users").document(uid).collection(lift)
-                            .document("set" + (i + 1))
-                            .set(data);
+                    sessionReference.collection("sets").document(String.valueOf(i + 1)).set(data);
 
-                    sessionModelsPrevious.add(new SessionModel(weightAdd, repsAdd, difficultyAdd));
+                    sessionPrevious.add(new SetModel(weightAdd, repsAdd, difficultyAdd));
                     adapterPrevious.notifyItemInserted(i);
                 }
 
-                sessionModelsCurrent.clear();
+
+                sessionCurrent.clear();
                 adapterCurrent.notifyItemRangeChanged(0, 0);
                 adapterCurrent.notifyDataSetChanged();
 
@@ -535,7 +539,7 @@ public class ActiveLift extends AppCompatActivity
                 break;
 
             case "deadlift":
-                lift = benchFlatBB;
+                lift = deadliftConvBB;
                 seekBarBarType.setVisibility(View.VISIBLE);
                 seekBarSelectThree.setVisibility(View.INVISIBLE);
                 seekBarSelectTwo.setVisibility(View.VISIBLE);
@@ -568,10 +572,10 @@ public class ActiveLift extends AppCompatActivity
                 textViewBottomSeek3.setText(R.string.underhand);
                 break;
         }
-        fetchData(sessionModelsPrevious, adapterPrevious);
+        fetchData(sessionPrevious, adapterPrevious);
     }
 
-    private void fetchData(ArrayList<SessionModel> previous, Session_RecyclerViewAdapter adapter)
+    private void fetchData(Session previous, Session_RecyclerViewAdapter adapter)
     {
         previous.clear();
         database.collection("users").document(uid).collection(lift).orderBy("set")
@@ -585,7 +589,7 @@ public class ActiveLift extends AppCompatActivity
                         {
                             for (QueryDocumentSnapshot document : task.getResult())
                             {
-                                previous.add(document.toObject(SessionModel.class));
+                                previous.add(document.toObject(SetModel.class));
                                 Log.d("fetch", "added to list, size: " + previous.size());
                             }
                             adapter.notifyDataSetChanged();

@@ -1,8 +1,6 @@
 package com.petrus.simplelifts;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +18,11 @@ import java.util.ArrayList;
 public class Session_RecyclerViewAdapter extends RecyclerView.Adapter <Session_RecyclerViewAdapter.MyViewHolder>
 {
     Context context;
-    ArrayList<SessionModel> sessionModels;
+    Session session;
 
-    public Session_RecyclerViewAdapter(ArrayList<SessionModel> sessionModels, Context context)
+    public Session_RecyclerViewAdapter(Session session, Context context)
     {
-        this.sessionModels = sessionModels;
+        this.session = session;
         this.context = context;
     }
     @NonNull
@@ -45,16 +43,16 @@ public class Session_RecyclerViewAdapter extends RecyclerView.Adapter <Session_R
         // based on the position of the recycler view
         DecimalFormat format = new DecimalFormat("0.#");
 
-        holder.weight.setText(String.valueOf(format.format(sessionModels.get(position).getWeight())));
-        holder.reps.setText(String.valueOf(sessionModels.get(position).getReps()));
-        holder.difficulty.setImageResource(sessionModels.get(position).imageValue());
+        holder.weight.setText(String.valueOf(format.format(session.get(position).getWeight())));
+        holder.reps.setText(String.valueOf(session.get(position).getReps()));
+        holder.difficulty.setImageResource(session.get(position).imageValue());
     }
 
     @Override
     public int getItemCount()
     {
         // the recycler view just wants to know the number of items you want displayed
-        return sessionModels.size();
+        return session.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder

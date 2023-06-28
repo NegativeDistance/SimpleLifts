@@ -1,14 +1,14 @@
 package com.petrus.simplelifts;
 
-public class SessionModel
+public class SetModel
 {
     Double weight;
     Integer reps;
     String difficulty;
 
-    public SessionModel(){}
+    public SetModel(){}
 
-    public SessionModel(Double weight, Integer reps, String difficulty)
+    public SetModel(Double weight, Integer reps, String difficulty)
     {
         this.weight = weight;
         this.reps = reps;

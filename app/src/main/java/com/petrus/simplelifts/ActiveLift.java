@@ -5,33 +5,25 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ActiveLift extends AppCompatActivity
 {
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    FirebaseFirestore database;
-
+    DataManager dataManager;
     Session sessionPrevious, sessionCurrent;
     Session_RecyclerViewAdapter adapterPrevious, adapterCurrent;
 
@@ -39,14 +31,13 @@ public class ActiveLift extends AppCompatActivity
     TextView textViewTopSeek1, textViewTopSeek2;
     TextView textViewBottomSeek1, textViewBottomSeek2, textViewBottomSeek3;
 
+    ImageView nextSessionButton, previousSessionButton;
+
     RadioButton easy, normal, hard;
     Button add, delete, finish;
     EditText weight, reps;
-
     SeekBar seekBarBarType, seekBarSelectTwo, seekBarSelectThree;
 
-    String uid;
-    String lift;
     String benchFlatBB, benchFlatDB, benchInclineBB, benchInclineDB, benchDeclineBB, benchDeclineDB,
             overheadStandingBB, overheadStandingDB, overheadSeatedBB, overheadSeatedDB,
             squatHighBB, squatLowBB, squatFrontBB,
@@ -63,10 +54,7 @@ public class ActiveLift extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_active_lift);
 
-        database = FirebaseFirestore.getInstance();
-
-        //Find where to put this/set it for the user
-        uid = auth.getUid();
+        dataManager = new DataManager();
         mode = getIntent().getStringExtra("mode");
 
         sessionPrevious = new Session();
@@ -88,6 +76,9 @@ public class ActiveLift extends AppCompatActivity
         textViewBottomSeek1 = findViewById(R.id.textViewBottomSeek1);
         textViewBottomSeek2 = findViewById(R.id.textViewBottomSeek2);
         textViewBottomSeek3 = findViewById(R.id.textViewBottomSeek3);
+
+        nextSessionButton = findViewById(R.id.imageViewNextSession);
+        previousSessionButton = findViewById(R.id.imageViewPreviousSession);
 
         seekBarBarType = findViewById(R.id.seekBarBarType);
         seekBarSelectThree = findViewById(R.id.seekBarSelectThree);
@@ -139,95 +130,95 @@ public class ActiveLift extends AppCompatActivity
                     case "bench":
                         if (progress == 0 && seekBarSelectThree.getProgress() == 0)
                         {
-                            lift = benchDeclineBB;
+                            dataManager.setLift(benchDeclineBB);
                         }
                         else if (progress == 0 && seekBarSelectThree.getProgress() == 1)
                         {
-                            lift = benchFlatBB;
+                            dataManager.setLift(benchFlatBB);
                         }
                         else if (progress == 0 && seekBarSelectThree.getProgress() == 2)
                         {
-                            lift = benchInclineBB;
+                            dataManager.setLift(benchInclineBB);
                         }
                         if (progress == 1 && seekBarSelectThree.getProgress() == 0)
                         {
-                            lift = benchDeclineDB;
+                            dataManager.setLift(benchDeclineDB);
                         }
                         else if (progress == 1 && seekBarSelectThree.getProgress() == 1)
                         {
-                            lift = benchFlatDB;
+                            dataManager.setLift(benchFlatDB);
                         }
                         else if (progress == 1 && seekBarSelectThree.getProgress() == 2)
                         {
-                            lift = benchInclineDB;
+                            dataManager.setLift(benchInclineDB);
                         }
                         break;
 
                     case "overhead":
                         if (progress == 0 && seekBarSelectTwo.getProgress() == 0)
                         {
-                            lift = overheadStandingBB;
+                            dataManager.setLift(overheadStandingBB);
                         }
                         else if (progress == 0 && seekBarSelectTwo.getProgress() == 1)
                         {
-                            lift = overheadSeatedBB;
+                            dataManager.setLift(overheadSeatedBB);
                         }
                         if (progress == 1 && seekBarSelectTwo.getProgress() == 0)
                         {
-                            lift = overheadStandingDB;
+                            dataManager.setLift(overheadStandingDB);
                         }
                         else if (progress == 1 && seekBarSelectTwo.getProgress() == 1)
                         {
-                            lift = overheadSeatedDB;
+                            dataManager.setLift(overheadSeatedDB);
                         }
                         break;
 
                     case "deadlift":
                         if (progress == 0 && seekBarSelectTwo.getProgress() == 0)
                         {
-                            lift = deadliftConvBB;
+                            dataManager.setLift(deadliftConvBB);
                         }
                         if (progress == 0 && seekBarSelectTwo.getProgress() == 1)
                         {
-                            lift = deadliftSumoBB;
+                            dataManager.setLift(deadliftSumoBB);
                         }
                         else if (progress == 1)
                         {
                             seekBarSelectTwo.setProgress(0);
-                            lift = deadliftConvHex;
+                            dataManager.setLift(deadliftConvHex);
                         }
                         break;
 
                     case "row":
                         if (progress == 0 && seekBarSelectThree.getProgress() == 0)
                         {
-                            lift = rowOverhandBB;
+                            dataManager.setLift(rowOverhandBB);
                         }
                         else if (progress == 0 && seekBarSelectThree.getProgress() == 1)
                         {
-                            lift = rowNeutralBB;
+                            dataManager.setLift(rowNeutralBB);
                         }
                         else if (progress == 0 && seekBarSelectThree.getProgress() == 2)
                         {
-                            lift = rowUnderhandBB;
+                            dataManager.setLift(rowUnderhandBB);
                         }
                         if (progress == 1 && seekBarSelectThree.getProgress() == 0)
                         {
-                            lift = rowOverhandDB;
+                            dataManager.setLift(rowOverhandDB);
                         }
                         else if (progress == 1 && seekBarSelectThree.getProgress() == 1)
                         {
-                            lift = rowNeutralDB;
+                            dataManager.setLift(rowNeutralDB);
                         }
                         else if (progress == 1 && seekBarSelectThree.getProgress() == 2)
                         {
-                            lift = rowUnderhandDB;
+                            dataManager.setLift(rowUnderhandDB);
                         }
                         break;
                 }
 
-                fetchData(sessionPrevious, adapterPrevious);
-                Log.d("switch", "current lift: " + lift);
+                dataManager.populate(sessionPrevious, adapterPrevious);
+                Log.d("switch", "current lift: " + dataManager.getLift());
             }
 
             @Override
@@ -253,75 +244,74 @@ public class ActiveLift extends AppCompatActivity
                     case "bench":
                         if (progress == 0 && seekBarBarType.getProgress() == 0)
                         {
-                            lift = benchDeclineBB;
+                            dataManager.setLift(benchDeclineBB);
                         }
                         else if (progress == 0 && seekBarBarType.getProgress() == 1)
                         {
-                            lift = benchDeclineDB;
+                            dataManager.setLift(benchDeclineDB);
                         }
                         else if (progress == 1 && seekBarBarType.getProgress() == 0)
                         {
-                            lift = benchFlatBB;
+                            dataManager.setLift(benchFlatBB);
                         }
                         else if (progress == 1 && seekBarBarType.getProgress() == 1)
                         {
-                            lift = benchFlatDB;
+                            dataManager.setLift(benchFlatDB);
                         }
                         else if (progress == 2 && seekBarBarType.getProgress() == 0)
                         {
-                            lift = benchInclineBB;
+                            dataManager.setLift(benchInclineBB);
                         }
                         else if (progress == 2 && seekBarBarType.getProgress() == 1)
                         {
-                            lift = benchInclineDB;
+                            dataManager.setLift(benchInclineDB);
                         }
                         break;
 
                     case "squat":
                         if (progress == 0)
                         {
-                            lift = squatLowBB;
+                            dataManager.setLift(squatLowBB);
                         }
                         else if (progress == 1)
                         {
-                            lift = squatHighBB;
+                            dataManager.setLift(squatHighBB);
                         }
                         else if (progress == 2)
                         {
-                            lift = squatFrontBB;
+                            dataManager.setLift(squatFrontBB);
                         }
                         break;
 
                     case "row":
                         if (progress == 0 && seekBarBarType.getProgress() == 0)
                         {
-                            lift = rowOverhandBB;
+                            dataManager.setLift(rowOverhandBB);
                         }
                         else if (progress == 0 && seekBarBarType.getProgress() == 1)
                         {
-                            lift = rowOverhandDB;
+                            dataManager.setLift(rowOverhandDB);
                         }
                         else if (progress == 1 && seekBarBarType.getProgress() == 0)
                         {
-                            lift = rowNeutralBB;
+                            dataManager.setLift(rowNeutralBB);
                         }
                         else if (progress == 1 && seekBarBarType.getProgress() == 1)
                         {
-                            lift = rowNeutralDB;
+                            dataManager.setLift(rowNeutralDB);
                         }
                         else if (progress == 2 && seekBarBarType.getProgress() == 0)
                         {
-                            lift = rowUnderhandBB;
+                            dataManager.setLift(rowUnderhandBB);
                         }
                         else if (progress == 2 && seekBarBarType.getProgress() == 1)
                         {
-                            lift = rowUnderhandDB;
+                            dataManager.setLift(rowUnderhandDB);
                         }
                         break;
                 }
-
-                fetchData(sessionPrevious, adapterPrevious);
-                Log.d("switch", "current lift: " + lift);
+                dataManager.populate(sessionPrevious, adapterPrevious);
+                Log.d("switch", "current lift: " + dataManager.getLift());
             }
 
             @Override
@@ -345,40 +335,40 @@ public class ActiveLift extends AppCompatActivity
                     case "overhead":
                         if (progress == 0 && seekBarBarType.getProgress() == 0)
                         {
-                            lift = overheadStandingBB;
+                            dataManager.setLift(overheadStandingBB);
                         }
                         else if (progress == 0 && seekBarBarType.getProgress() == 1)
                         {
-                            lift = overheadStandingDB;
+                            dataManager.setLift(overheadStandingDB);
                         }
                         if (progress == 1 && seekBarBarType.getProgress() == 0)
                         {
-                            lift = overheadSeatedBB;
+                            dataManager.setLift(overheadSeatedBB);
                         }
                         else if (progress == 1 && seekBarBarType.getProgress() == 1)
                         {
-                            lift = overheadSeatedDB;
+                            dataManager.setLift(overheadSeatedDB);
                         }
                         break;
 
                     case "deadlift":
                         if (progress == 0 && seekBarBarType.getProgress() == 0)
                         {
-                            lift = deadliftConvBB;
+                            dataManager.setLift(deadliftConvBB);
                         }
                         else if (progress == 0 && seekBarBarType.getProgress() == 1)
                         {
-                            lift = deadliftConvHex;
+                            dataManager.setLift(deadliftConvHex);
                         }
                         else if (progress == 1)
                         {
                             seekBarBarType.setProgress(0);
-                            lift = deadliftSumoBB;
+                            dataManager.setLift(deadliftSumoBB);
                         }
                         break;
                 }
-                fetchData(sessionPrevious, adapterPrevious);
-                Log.d("switch", "current lift: " + lift);
+                dataManager.populate(sessionPrevious, adapterPrevious);
+                Log.d("switch", "current lift: " + dataManager.getLift());
             }
 
             @Override
@@ -455,7 +445,7 @@ public class ActiveLift extends AppCompatActivity
                 Map<String, Object> time = new HashMap<>();
                 time.put("timestamp", FieldValue.serverTimestamp());
 
-                DocumentReference sessionReference = database.collection("users").document(uid).collection(lift).document();
+                DocumentReference sessionReference = dataManager.newDocumentID();
                 sessionReference.set(time);
 
                 for (int i = 0; i < sessionCurrent.size(); i++)
@@ -483,6 +473,34 @@ public class ActiveLift extends AppCompatActivity
                 position = 0;
             }
         });
+
+        nextSessionButton.setOnClickListener(view ->
+        {
+            if (dataManager.getCurrentPos() > 0)
+            {
+                dataManager.setCurrentPos(dataManager.getCurrentPos() - 1);
+                dataManager.fetchSets(sessionPrevious, adapterPrevious);
+                nextSessionButton.setImageResource(R.drawable.arrow_right);
+            }
+            else if (dataManager.getCurrentPos() == 0)
+            {
+                nextSessionButton.setImageResource(R.drawable.arrow_right_gray);
+            }
+        });
+
+        previousSessionButton.setOnClickListener(view ->
+        {
+            if (dataManager.getCurrentPos() < dataManager.getMaxPos())
+            {
+                dataManager.setCurrentPos(dataManager.getCurrentPos() + 1);
+                dataManager.fetchSets(sessionPrevious, adapterPrevious);
+                previousSessionButton.setImageResource(R.drawable.arrow_left);
+            }
+            else if (dataManager.getCurrentPos() == dataManager.getMaxPos())
+            {
+                previousSessionButton.setImageResource(R.drawable.arrow_left_gray);
+            }
+        });
     }
 
     private void setup(String mode)
@@ -490,7 +508,7 @@ public class ActiveLift extends AppCompatActivity
         switch(mode)
         {
             case "bench":
-                lift = benchFlatBB;
+                dataManager.setLift(benchFlatBB);
                 seekBarBarType.setVisibility(View.VISIBLE);
                 seekBarSelectThree.setVisibility(View.VISIBLE);
                 seekBarSelectTwo.setVisibility(View.INVISIBLE);
@@ -507,7 +525,7 @@ public class ActiveLift extends AppCompatActivity
                 break;
 
             case "overhead":
-                lift = overheadStandingBB;
+                dataManager.setLift(overheadStandingBB);
                 seekBarBarType.setVisibility(View.VISIBLE);
                 seekBarSelectThree.setVisibility(View.INVISIBLE);
                 seekBarSelectTwo.setVisibility(View.VISIBLE);
@@ -523,7 +541,7 @@ public class ActiveLift extends AppCompatActivity
                 break;
 
             case "squat":
-                lift = squatHighBB;
+                dataManager.setLift(squatHighBB);
                 seekBarBarType.setVisibility(View.INVISIBLE);
                 seekBarSelectThree.setVisibility(View.VISIBLE);
                 seekBarSelectTwo.setVisibility(View.INVISIBLE);
@@ -539,7 +557,7 @@ public class ActiveLift extends AppCompatActivity
                 break;
 
             case "deadlift":
-                lift = deadliftConvBB;
+                dataManager.setLift(deadliftConvBB);
                 seekBarBarType.setVisibility(View.VISIBLE);
                 seekBarSelectThree.setVisibility(View.INVISIBLE);
                 seekBarSelectTwo.setVisibility(View.VISIBLE);
@@ -555,7 +573,7 @@ public class ActiveLift extends AppCompatActivity
                 break;
 
             case "row":
-                lift = rowOverhandBB;
+                dataManager.setLift(rowOverhandBB);
                 seekBarBarType.setVisibility(View.VISIBLE);
                 seekBarSelectThree.setVisibility(View.VISIBLE);
                 seekBarSelectThree.setProgress(0);
@@ -572,33 +590,6 @@ public class ActiveLift extends AppCompatActivity
                 textViewBottomSeek3.setText(R.string.underhand);
                 break;
         }
-        fetchData(sessionPrevious, adapterPrevious);
-    }
-
-    private void fetchData(Session previous, Session_RecyclerViewAdapter adapter)
-    {
-        previous.clear();
-        database.collection("users").document(uid).collection(lift).orderBy("set")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-                {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task)
-                    {
-                        if (task.isSuccessful())
-                        {
-                            for (QueryDocumentSnapshot document : task.getResult())
-                            {
-                                previous.add(document.toObject(SetModel.class));
-                                Log.d("fetch", "added to list, size: " + previous.size());
-                            }
-                            adapter.notifyDataSetChanged();
-                        }
-                        else
-                        {
-                            Log.d("fetch", "error getting documents", task.getException());
-                        }
-                    }
-                });
+        dataManager.populate(sessionPrevious, adapterPrevious);
     }
 }

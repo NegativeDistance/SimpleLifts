@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 public class Session_RecyclerViewAdapter extends RecyclerView.Adapter <Session_RecyclerViewAdapter.MyViewHolder>
 {

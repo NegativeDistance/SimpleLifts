@@ -312,7 +312,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageViewLeftButton"
+        android:id="@+id/imageViewPreviousSession"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/textViewPreviousTitle"
@@ -321,7 +321,7 @@
         app:srcCompat="@drawable/arrow_left" />
 
     <ImageView
-        android:id="@+id/imageViewRightButton"
+        android:id="@+id/imageViewNextSession"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/textViewPreviousTitle"

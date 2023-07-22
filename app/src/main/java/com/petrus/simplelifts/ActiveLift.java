@@ -216,8 +216,7 @@ public class ActiveLift extends AppCompatActivity
                         }
                         break;
                 }
-
-                dataManager.populate(sessionPrevious, adapterPrevious);
+                dataManager.populate(sessionPrevious, adapterPrevious, nextSessionButton, previousSessionButton);
                 Log.d("switch", "current lift: " + dataManager.getLift());
             }
 
@@ -310,7 +309,7 @@ public class ActiveLift extends AppCompatActivity
                         }
                         break;
                 }
-                dataManager.populate(sessionPrevious, adapterPrevious);
+                dataManager.populate(sessionPrevious, adapterPrevious, nextSessionButton, previousSessionButton);
                 Log.d("switch", "current lift: " + dataManager.getLift());
             }
 
@@ -367,7 +366,7 @@ public class ActiveLift extends AppCompatActivity
                         }
                         break;
                 }
-                dataManager.populate(sessionPrevious, adapterPrevious);
+                dataManager.populate(sessionPrevious, adapterPrevious, nextSessionButton, previousSessionButton);
                 Log.d("switch", "current lift: " + dataManager.getLift());
             }
 
@@ -476,30 +475,18 @@ public class ActiveLift extends AppCompatActivity
 
         nextSessionButton.setOnClickListener(view ->
         {
-            if (dataManager.getCurrentPos() > 0)
-            {
-                dataManager.setCurrentPos(dataManager.getCurrentPos() - 1);
-                dataManager.fetchSets(sessionPrevious, adapterPrevious);
-                nextSessionButton.setImageResource(R.drawable.arrow_right);
-            }
-            else if (dataManager.getCurrentPos() == 0)
-            {
-                nextSessionButton.setImageResource(R.drawable.arrow_right_gray);
-            }
+            dataManager.setCurrentPos(dataManager.getCurrentPos() - 1);
+            dataManager.fetchSets(sessionPrevious, adapterPrevious);
+            nextCheck();
+            previousCheck();
         });
 
         previousSessionButton.setOnClickListener(view ->
         {
-            if (dataManager.getCurrentPos() < dataManager.getMaxPos())
-            {
-                dataManager.setCurrentPos(dataManager.getCurrentPos() + 1);
-                dataManager.fetchSets(sessionPrevious, adapterPrevious);
-                previousSessionButton.setImageResource(R.drawable.arrow_left);
-            }
-            else if (dataManager.getCurrentPos() == dataManager.getMaxPos())
-            {
-                previousSessionButton.setImageResource(R.drawable.arrow_left_gray);
-            }
+            dataManager.setCurrentPos(dataManager.getCurrentPos() + 1);
+            dataManager.fetchSets(sessionPrevious, adapterPrevious);
+            nextCheck();
+            previousCheck();
         });
     }
 
@@ -590,6 +577,34 @@ public class ActiveLift extends AppCompatActivity
                 textViewBottomSeek3.setText(R.string.underhand);
                 break;
         }
-        dataManager.populate(sessionPrevious, adapterPrevious);
+        dataManager.populate(sessionPrevious, adapterPrevious, nextSessionButton, previousSessionButton);
+    }
+
+    private void nextCheck()
+    {
+        if (dataManager.nextAvailable())
+        {
+            nextSessionButton.setImageResource(R.drawable.arrow_right);
+            nextSessionButton.setClickable(true);
+        }
+        else if (dataManager.getCurrentPos() == 0)
+        {
+            nextSessionButton.setImageResource(R.drawable.arrow_right_gray);
+            nextSessionButton.setClickable(false);
+        }
+    }
+
+    private void previousCheck()
+    {
+        if (dataManager.previousAvailable())
+        {
+            previousSessionButton.setImageResource(R.drawable.arrow_left);
+            previousSessionButton.setClickable(true);
+        }
+        else if (dataManager.getCurrentPos() == dataManager.getMaxPos())
+        {
+            previousSessionButton.setImageResource(R.drawable.arrow_left_gray);
+            previousSessionButton.setClickable(false);
+        }
     }
 }

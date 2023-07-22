@@ -1,6 +1,7 @@
 package com.petrus.simplelifts;
 
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -39,7 +40,7 @@ public class DataManager
         return database.collection("users").document(uid).collection(lift).document();
     }
 
-    public void populate(Session previous, Session_RecyclerViewAdapter adapter)
+    public void populate(Session previous, Session_RecyclerViewAdapter adapter, ImageView nextButton, ImageView previousButton)
     {
         sessionIDs.clear();
         database.collection("users").document(uid).collection(lift).orderBy("timestamp", Query.Direction.DESCENDING)
@@ -60,31 +61,19 @@ public class DataManager
                             currentPos = 0;
                             maxPos = sessionIDs.size() - 1;
                             fetchSets(previous, adapter);
-                        }
-                        else
-                        {
-                            Log.d("fetch", "error getting documents", task.getException());
-                        }
-                    }
-                });
-    }
-    public void fetchSessions()
-    {
-        sessionIDs.clear();
-        database.collection("users").document(uid).collection(lift).orderBy("timestamp")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-                {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task)
-                    {
-                        if (task.isSuccessful())
-                        {
-                            for (QueryDocumentSnapshot document : task.getResult())
+
+                            nextButton.setClickable(false);
+                            nextButton.setImageResource(R.drawable.arrow_right_gray);
+
+                            if (sessionIDs.size() > 1)
                             {
-                                sessionIDs.add(document.getId());
-                                Log.d("fetch", "added to list, size: " + sessionIDs.size() + "\n ID: " + sessionIDs.get(sessionIDs.size() - 1));
-                                activeSessionID = sessionIDs.get(0);
+                                previousButton.setClickable(true);
+                                previousButton.setImageResource(R.drawable.arrow_left);
+                            }
+                            else
+                            {
+                                previousButton.setClickable(false);
+                                previousButton.setImageResource(R.drawable.arrow_left_gray);
                             }
                         }
                         else
@@ -130,6 +119,16 @@ public class DataManager
                         }
                     }
                 });
+    }
+
+    public boolean nextAvailable()
+    {
+        return (currentPos > 0);
+    }
+
+    public boolean previousAvailable()
+    {
+        return (currentPos < maxPos);
     }
 
     public FirebaseFirestore getDatabase()

@@ -318,7 +318,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textViewPreviousTitle"
         app:layout_constraintEnd_toStartOf="@+id/textViewPreviousTitle"
         app:layout_constraintTop_toTopOf="@+id/textViewPreviousTitle"
-        app:srcCompat="@drawable/arrow_left" />
+        app:srcCompat="@drawable/arrow_left_gray" />
 
     <ImageView
         android:id="@+id/imageViewNextSession"
@@ -327,6 +327,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/textViewPreviousTitle"
         app:layout_constraintStart_toEndOf="@+id/textViewPreviousTitle"
         app:layout_constraintTop_toTopOf="@+id/textViewPreviousTitle"
-        app:srcCompat="@drawable/arrow_right" />
+        app:srcCompat="@drawable/arrow_right_gray" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

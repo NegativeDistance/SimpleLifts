@@ -244,9 +244,9 @@
             android:layout_height="22dp"
             android:max="2"
             android:progress="1"
-            android:progressBackgroundTint="@color/sl_purple"
+            android:progressBackgroundTint="?colorPrimaryVariant"
             android:progressBackgroundTintMode="src_over"
-            android:progressTint="@color/sl_purple"
+            android:progressTint="?colorPrimaryVariant"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

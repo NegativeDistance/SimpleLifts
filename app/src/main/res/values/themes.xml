@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.SimpleLifts" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -16,16 +16,16 @@
     
     <style name="RadioButtonRed" parent="Theme.AppCompat.Light">
         <!-- color of radio button -->
-        <item name="colorAccent">@color/hard</item>
+        <item name="colorControlActivated">@color/hard</item>
     </style>
 
     <style name="RadioButtonGreen" parent="Theme.AppCompat.Light">
         <!-- color of radio button -->
-        <item name="colorAccent">@color/normal</item>
+        <item name="colorControlActivated">@color/normal</item>
     </style>
 
     <style name="RadioButtonBlue" parent="Theme.AppCompat.Light">
         <!-- color of radio button -->
-        <item name="colorAccent">@color/easy</item>
+        <item name="colorControlActivated">@color/easy</item>
     </style>
 </resources>

@@ -439,7 +439,6 @@ public class ActiveLift extends AppCompatActivity
             {
                 sessionPrevious.clear();
                 adapterPrevious.notifyItemRangeChanged(0, 0);
-                adapterPrevious.notifyDataSetChanged();
 
                 Map<String, Object> time = new HashMap<>();
                 time.put("timestamp", FieldValue.serverTimestamp());
@@ -466,7 +465,6 @@ public class ActiveLift extends AppCompatActivity
 
 
                 sessionCurrent.clear();
-                adapterCurrent.notifyItemRangeChanged(0, 0);
                 adapterCurrent.notifyDataSetChanged();
 
                 position = 0;
